@@ -34,7 +34,7 @@ class PrintEditionItem {
   }
   
   class Book extends PrintEditionItem {
-    constructor(name, releaseDate, pagesCount, author) {
+    constructor(author, name, releaseDate, pagesCount) {
       super(name, releaseDate, pagesCount);
       this.author = author;
       this.type = "book";
@@ -78,34 +78,17 @@ class Library {
     }
     
     findBookBy(type, value) {
-      let book = null;
-      for (let i = 0; i < this.books.length; i++) {
-        if (this.books[i][type] === value) {
-          book = this.books[i];
-          break;
-        }
+        const findResult = this.books.find((item) => item[type] === value);
+        return findResult || null;
       }
-      return book;
-    }
-    
-    giveBookByName(bookName) {
-      let bookIndex = null;
-      for (let i = 0; i < this.books.length; i++) {
-        if (this.books[i].name === bookName) {
-          bookIndex = i;
-          break;
-        }
-      }
-      if (bookIndex !== null) {
-        let book = this.books.splice(bookIndex, 1)[0];
-        console.log(`The book "${book.name}" has been given to the reader.`);
+      
+      giveBookByName(bookName) {
+        const book = this.findBookBy("name", bookName);
+        if (!book) return null;
+            this.books = this.books.filter((item) => item.name !== bookName);
         return book;
-      } else {
-        console.log(`The book "${bookName}" was not found in the library.`);
-        return null;
-      }
     }
-  }
+   }
   
   // Test scenario
   let library = new Library("National Library");
